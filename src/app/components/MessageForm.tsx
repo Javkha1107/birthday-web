@@ -1,16 +1,18 @@
 import { useLanguage } from "@/app/contexts/LanguageContext";
 import { motion } from "motion/react";
 import { useState } from "react";
-import { Send } from "lucide-react";
+import { Send, Loader2 } from "lucide-react";
 
 export function MessageForm() {
   const { t } = useLanguage();
   const [message, setMessage] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
 
     try {
       const response = await fetch("https://formspree.io/f/mpqlvbjw", {
@@ -30,6 +32,8 @@ export function MessageForm() {
       }
     } catch (error) {
       console.error("Error sending message:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -107,7 +111,7 @@ export function MessageForm() {
                 }}
                 whileTap={{ scale: 0.95 }}
                 transition={{ duration: 0.2 }}
-                disabled={isSubmitted}
+                disabled={isSubmitted || isLoading}
               >
                 {/* Button background animation */}
                 <motion.div
@@ -118,14 +122,32 @@ export function MessageForm() {
                 />
 
                 <span className="relative z-10 text-sm md:text-lg">
-                  {isSubmitted ? t("formSuccess") : t("formSubmit")}
+                  {isSubmitted
+                    ? t("formSuccess")
+                    : isLoading
+                      ? "..."
+                      : t("formSubmit")}
                 </span>
                 <motion.div
                   className="relative z-10"
-                  animate={isSubmitted ? { rotate: 360 } : {}}
-                  transition={{ duration: 0.6 }}
+                  animate={
+                    isSubmitted
+                      ? { rotate: 360 }
+                      : isLoading
+                        ? { rotate: 360 }
+                        : {}
+                  }
+                  transition={
+                    isLoading
+                      ? { duration: 1, repeat: Infinity, ease: "linear" }
+                      : { duration: 0.6 }
+                  }
                 >
-                  <Send size={16} className="md:w-5 md:h-5" />
+                  {isLoading ? (
+                    <Loader2 size={16} className="md:w-5 md:h-5" />
+                  ) : (
+                    <Send size={16} className="md:w-5 md:h-5" />
+                  )}
                 </motion.div>
               </motion.button>
             </motion.div>

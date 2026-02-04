@@ -46,7 +46,7 @@ const translations = {
 
     // Timeline
     timelineTitle: "Дурсамж",
-    timeline1Date: "2023.03.15",
+    timeline1Date: "2022.04.23",
     timeline1Place: "Анхны уулзалт",
     timeline1Memory:
       "Анх уулзсан өдөр авсан бяцхан сарнай. Тоглоомдоо ялагдсанаа мэдсэн баяртай өдөр.",
