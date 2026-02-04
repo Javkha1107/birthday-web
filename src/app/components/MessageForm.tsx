@@ -118,7 +118,7 @@ export function MessageForm() {
                 />
 
                 <span className="relative z-10 text-sm md:text-lg">
-                  {!isSubmitted ? t("formSuccess") : t("formSubmit")}
+                  {isSubmitted ? t("formSuccess") : t("formSubmit")}
                 </span>
                 <motion.div
                   className="relative z-10"
